@@ -1,4 +1,4 @@
-import API from './apiService';
+import API, { imageLimit } from './apiService';
 import debounce from 'lodash.debounce';
 import imageCardTpl from '../templates/image-card.hbs';
 import '@pnotify/core/dist/PNotify.css';
@@ -8,7 +8,7 @@ import { alert, info, error, defaultModules } from '@pnotify/core';
 const inputEl = document.querySelector('input[name="query"]');
 const galleryEl = document.querySelector('.js-gallery-container');
 const loadMoreButtonEl = document.querySelector('.load-more-button');
-let page = 1;
+let hits = [];
 let searchQuery;
 
 galleryEl.innerHTML = '';
@@ -18,15 +18,15 @@ loadMoreButtonEl.addEventListener('click', onButtonClick);
 
 function onInputType(e) {
   e.preventDefault();
-
   const field = e.target;
   galleryEl.innerHTML = '';
+  hits = [];
   searchQuery = inputEl.value;
   if (searchQuery == '') {
     galleryEl.innerHTML = '';
     return;
   }
-  API(searchQuery, page)
+  API(searchQuery, 1)
     .then(renderContent)
     .catch(onFetchError)
     .finally(() => field.reset);
@@ -34,18 +34,21 @@ function onInputType(e) {
 
 function renderContent(response) {
   console.log('renderContent');
-  const { hits } = response;
+  const images = response.hits;
+  hits.push(...images);
   renderImageCards(hits);
 
-  if (hits.length === 12) {
+  console.log('hits', hits);
+
+  if (images.length === imageLimit) {
     loadMoreButtonEl.classList.remove('hidden');
   } else {
     loadMoreButtonEl.classList.add('hidden');
   }
 }
 
-function renderImageCards(hits) {
-  galleryEl.innerHTML = imageCardTpl(hits);
+function renderImageCards(images) {
+  galleryEl.innerHTML = imageCardTpl(images);
 }
 
 function onFetchError() {
@@ -58,8 +61,9 @@ function onFetchError() {
 }
 
 function onButtonClick(e) {
+  const page = Math.floor(hits.length / imageLimit) + 1;
+  console.log('page', page);
   console.log(searchQuery);
   e.preventDefault();
-  page += 1;
-  API(searchQuery, page).then(renderImageCards).catch(onFetchError);
+  API(searchQuery, page).then(renderContent).catch(onFetchError);
 }
