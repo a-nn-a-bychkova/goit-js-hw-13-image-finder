@@ -33,13 +33,9 @@ function onInputType(e) {
 }
 
 function renderContent(response) {
-  console.log('renderContent');
   const images = response.hits;
   hits.push(...images);
   renderImageCards(hits);
-
-  console.log('hits', hits);
-
   if (images.length === imageLimit) {
     loadMoreButtonEl.classList.remove('hidden');
   } else {
@@ -52,7 +48,6 @@ function renderImageCards(images) {
 }
 
 function onFetchError() {
-  console.log('Something went wrong');
   alert({
     text: 'Something went wrong',
     maxTextHeight: null,
@@ -62,8 +57,16 @@ function onFetchError() {
 
 function onButtonClick(e) {
   const page = Math.floor(hits.length / imageLimit) + 1;
-  console.log('page', page);
-  console.log(searchQuery);
   e.preventDefault();
-  API(searchQuery, page).then(renderContent).catch(onFetchError);
+  const coordinateY = document.documentElement.scrollTop;
+  API(searchQuery, page)
+    .then(renderContent)
+    .then(() => {
+      window.scrollTo({
+        top: coordinateY,
+        left: 0,
+        behavior: 'smooth',
+      });
+    })
+    .catch(onFetchError);
 }
