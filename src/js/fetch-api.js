@@ -9,15 +9,16 @@ import { alert, info, error, defaultModules } from '@pnotify/core';
 const inputEl = document.querySelector('input[name="query"]');
 const galleryEl = document.querySelector('.js-gallery-container');
 const loadMoreButtonEl = document.querySelector('.load-more-button');
-let searchQuery;
+
 galleryEl.innerHTML = '';
 inputEl.addEventListener('input', debounce(onInputType, 500));
 
 console.log(loadMoreButtonEl);
-// loadMoreButtonEl.addEventListener('click', onButtonClick);
+loadMoreButtonEl.addEventListener('click', onButtonClick);
 
 function onInputType(e) {
   e.preventDefault();
+  let searchQuery;
   const field = e.target;
   galleryEl.innerHTML = '';
   searchQuery = inputEl.value;
@@ -43,12 +44,12 @@ function onFetchError() {
 
 function onButtonClick(e) {
   console.log('button click');
-  // e.preventDefault();
-  // const field = e.target;
-  // galleryEl.innerHTML = '';
-  // searchQuery = inputEl.value;
-  // API(searchQuery)
-  //   .then(renderImageCards)
-  //   .catch(onFetchError)
-  //   .finally(() => field.reset);
+  e.preventDefault();
+  const field = e.target;
+  galleryEl.innerHTML = '';
+  searchQuery = inputEl.value;
+  API(searchQuery)
+    .then(renderImageCards)
+    .catch(onFetchError)
+    .finally(() => field.reset);
 }
