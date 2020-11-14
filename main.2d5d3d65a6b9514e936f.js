@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[0],{CsRO:function(o,n){},OPH6:function(o,n,e){},QfWi:function(o,n,e){"use strict";e.r(n);e("JBxO"),e("FdtR"),e("CsRO"),e("OPH6");fetch("https://pixabay.com/api/?key=19110749-e340c63922b3f8a4d502270f7&q=yellow+flowers&image_type=photo").then((function(o){return console.log(o.json)})).then(console.log)}},[["QfWi",1,2]]]);
-//# sourceMappingURL=main.2d5d3d65a6b9514e936f.js.map
