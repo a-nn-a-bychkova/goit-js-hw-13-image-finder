@@ -19,3 +19,22 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+li {
+  list-style-type: none; /* Убираем маркеры */
+}
+
+.list-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.photo-card {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+.rendered-image {
+  margin-right: 15px;
+}
