@@ -1,1 +1,1 @@
-import './styles.css';
+import fetchApi from './js/fetch-api';
