@@ -38,3 +38,6 @@ li {
 .rendered-image {
   margin-right: 15px;
 }
+.hidden {
+  display: none;
+}
